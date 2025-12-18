@@ -62,3 +62,46 @@ def de(
     best_f = fitness[best_idx]
     best_history = [best_f]
 
+    for gen in range(max_gens):
+        for i in range(pop_size):
+            # 2) Mutation: DE/rand/1
+            # choose 3 distinct indices different from i
+            idxs = np.arange(pop_size)
+            idxs = idxs[idxs != i]
+            r1, r2, r3 = rng.choice(idxs, size=3, replace=False)
+            x1, x2, x3 = pop[r1], pop[r2], pop[r3]
+            v = x1 + F * (x2 - x3)  # mutant vector
+
+            # 3) Crossover: binomial
+            u = pop[i].copy()
+            j_rand = rng.integers(0, dim)  # ensure at least one dimension from v
+            for j in range(dim):
+                if rng.random() < CR or j == j_rand:
+                    u[j] = v[j]
+
+            # 4) Bound handling (simple clipping)
+            for d in range(dim):
+                low, high = bounds[d]
+                if u[d] < low:
+                    u[d] = low
+                elif u[d] > high:
+                    u[d] = high
+
+            # 5) Selection
+            f_u = func(u)
+            if f_u < fitness[i]:
+                pop[i] = u
+                fitness[i] = f_u
+
+        # Update global best
+        best_idx = np.argmin(fitness)
+        if fitness[best_idx] < best_f:
+            best_f = fitness[best_idx]
+            best_x = pop[best_idx].copy()
+
+        best_history.append(best_f)
+
+    return best_x, best_f, best_history, pop
+
+
+
