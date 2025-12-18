@@ -108,7 +108,7 @@ def de(
 
 
 #######################################################################
-# Example usage with Rastrigin (For testing quickly):
+# Example usage with Rastrigin Function (For testing quickly):
 
 def rastrigin(x):
     A = 10
