@@ -108,7 +108,7 @@ def de(
 
 
 #######################################################################
-# Example usage with Rastrigin Function (For testing quickly):
+# Example usage with Rastrigin Function(Best Fitness):
 
 def rastrigin(x):
     A = 10
@@ -150,3 +150,9 @@ std_best = np.std(best_values)
 print("Mean best fitness:", mean_best)
 
 print("Std of best fitness:", std_best)
+
+
+
+
+
+# Example usage with Rastrigin Function(Entropy H{mean}):
