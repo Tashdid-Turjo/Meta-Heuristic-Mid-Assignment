@@ -118,15 +118,35 @@ def rastrigin(x):
 dim = 10
 bounds = [(-5.12, 5.12)] * dim
 
-best_x, best_f, hist, final_pop = de(
-    func=rastrigin,
-    bounds=bounds,
-    dim=dim,
-    pop_size=30,
-    F=0.5,
-    CR=0.9,
-    max_gens=300,
-    seed=42,
-)
 
-print("Best fitness:", best_f)
+# Will run for 20 times.
+best_values = []
+
+for run in range(20):                       
+    best_x, best_f, hist, final_pop = de(
+        func=rastrigin,
+        bounds=bounds,
+        dim=dim,
+        pop_size=30,
+        F=0.5,
+        CR=0.9,
+        max_gens=300,
+        seed= 41 + run,
+    )
+
+    best_values.append(best_f)
+
+print("\nEach best fitness value:")
+for val in best_values:
+    print(repr(val))
+
+
+# For (mean ± std):
+import numpy as np
+mean_best = np.mean(best_values)
+std_best = np.std(best_values)
+
+# Avg of 20 values -> mean
+print("Mean best fitness:", mean_best)
+
+print("Std of best fitness:", std_best)
