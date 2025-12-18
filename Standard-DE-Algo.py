@@ -13,7 +13,7 @@ def de(
     seed=None,
 ):
     """
-    Standard Differential Evolution (DE/rand/1/bin) for minimization.
+    Standard Differential Evolution (DE/rand/1/bin) for minimization. Here, bin -> binomial crossover.
 
     Parameters
     ----------
@@ -42,7 +42,9 @@ def de(
         Best objective value.
     best_history : list[float]
         Best fitness after each generation.
-    population : np.ndarray
+    best_idx : int
+        Index of the best individual in the population (position of the minimum value in fitness).
+    pop : np.ndarray
         Final population (pop_size x dim).
     """
 
@@ -105,3 +107,26 @@ def de(
 
 
 
+#######################################################################
+# Example usage with Rastrigin (For testing quickly):
+
+def rastrigin(x):
+    A = 10
+    return A * len(x) + np.sum(x**2 - A * np.cos(2 * np.pi * x))
+
+
+dim = 10
+bounds = [(-5.12, 5.12)] * dim
+
+best_x, best_f, hist, final_pop = de(
+    func=rastrigin,
+    bounds=bounds,
+    dim=dim,
+    pop_size=30,
+    F=0.5,
+    CR=0.9,
+    max_gens=300,
+    seed=42,
+)
+
+print("Best fitness:", best_f)
