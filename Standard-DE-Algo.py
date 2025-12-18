@@ -107,9 +107,48 @@ def de(
 
 
 
-#######################################################################
-# Example usage with Rastrigin Function(Best Fitness):
 
+
+
+#######################################################################
+# 2. DE algo with Rastrigin Function (Entropy H{mean}):
+def population_entropy_1d(pop, bounds, bins=20):
+    """
+    Shannon entropy of population distribution along first dimension.
+
+    pop    : array of shape (pop_size, dim)
+    bounds : list of (low, high) per dimension
+    bins   : number of histogram bins
+    """
+    x = pop[:, 0]  # use first dimension
+    low, high = bounds[0]
+
+    # Histogram over [low, high]
+    counts, _ = np.histogram(x, bins=bins, range=(low, high))
+
+    total = counts.sum()
+    if total == 0:
+        return 0.0
+
+    p = counts / total
+    # Avoid log(0): mask zero entries
+    p_nonzero = p[p > 0]
+
+    H = -np.sum(p_nonzero * np.log(p_nonzero))  # natural log
+    return H
+
+# for run in range(20):
+#     best_x, best_f, hist, final_pop = de(...)
+#     best_values.append(best_f)
+
+#     H = population_entropy_1d(final_pop, bounds, bins=20)
+#     entropy_values.append(H)
+
+
+
+
+#######################################################################
+# 1. DE algo with Rastrigin Function (Best Fitness):
 def rastrigin(x):
     A = 10
     return A * len(x) + np.sum(x**2 - A * np.cos(2 * np.pi * x))
@@ -118,10 +157,10 @@ def rastrigin(x):
 dim = 10
 bounds = [(-5.12, 5.12)] * dim
 
+best_values = []
+entropy_values = []
 
 # Will run for 20 times.
-best_values = []
-
 for run in range(20):                       
     best_x, best_f, hist, final_pop = de(
         func=rastrigin,
@@ -135,24 +174,32 @@ for run in range(20):
     )
 
     best_values.append(best_f)
+    
+    # Entropy of final population for this run
+    H = population_entropy_1d(final_pop, bounds, bins=20)
+    entropy_values.append(H)
+
 
 print("\nEach best fitness value:")
 for val in best_values:
     print(repr(val))
 
-
+print("\nEach entropy H value:")
+for H in entropy_values:
+    print(repr(H))
+    
 # For (mean ± std):
-import numpy as np
 mean_best = np.mean(best_values)
 std_best = np.std(best_values)
 
 # Avg of 20 values -> mean
-print("Mean best fitness:", mean_best)
+print("\nMean best fitness:", mean_best)
 
 print("Std of best fitness:", std_best)
 
+# Mean entropy H
+mean_entropy = np.mean(entropy_values)
+std_entropy = np.std(entropy_values)
 
-
-
-
-# Example usage with Rastrigin Function(Entropy H{mean}):
+print("Mean entropy H:", mean_entropy)
+print("Std of entropy H:", std_entropy)
