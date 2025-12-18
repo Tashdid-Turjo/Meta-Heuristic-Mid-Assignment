@@ -111,8 +111,9 @@ def de(
 
 
 #######################################################################
-# 2. DE algo with Rastrigin Function (Entropy H{mean}):
+# 1.1 DE algo with Rastrigin Function (Entropy H{mean}):
 def population_entropy_1d(pop, bounds, bins=20):
+    
     """
     Shannon entropy of population distribution along first dimension.
 
@@ -148,7 +149,7 @@ def population_entropy_1d(pop, bounds, bins=20):
 
 
 #######################################################################
-# 1. DE algo with Rastrigin Function (Best Fitness):
+# 1.2 DE algo with Rastrigin Function (Best Fitness):
 def rastrigin(x):
     A = 10
     return A * len(x) + np.sum(x**2 - A * np.cos(2 * np.pi * x))
