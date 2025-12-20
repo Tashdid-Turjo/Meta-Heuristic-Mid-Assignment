@@ -28,3 +28,15 @@ Install NumPy with:
 
 ```bash
 pip install numpy
+```
+
+---
+
+## 3. Results
+
+| Function (D=10) | Algorithm | Best Fitness (mean ± std) | Entropy H (mean) | Entropy H (std) |
+|----------------|-----------|---------------------------|------------------|-----------------|
+| Rastrigin      | DE        | 24.921 ± 6.076            | 1.693            | 0.218           |
+| Rastrigin      | EG-NDE    | 32.660 ± 9.081            | 2.209            | 0.169           |
+| Griewank       | DE        | 29.177 ± 5.439            | 0.581            | 0.134           |
+| Griewank       | EG-NDE    | 158.481 ± 46.290          | 0.663            | 0.069           |
